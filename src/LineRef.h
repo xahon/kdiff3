@@ -87,7 +87,7 @@ class LineRef
     [[nodiscard]] inline bool isValid() const noexcept { return mLineNumber != invalid; }
 
   private:
-    SafeSignedRange<LineType, invalid> mLineNumber = invalid;
+    LineType /*SafeSignedRange<LineType, invalid>*/ mLineNumber = invalid;
 };
 
 /*

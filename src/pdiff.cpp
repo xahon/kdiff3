@@ -2127,10 +2127,16 @@ void KDiff3App::slotAddManualDiffHelp()
     else
     {
         m_manualDiffHelpList.insertEntry(winIdx, firstLine, lastLine);
-
-        mainInit(m_totalDiffStatus, InitFlag::autoSolve | InitFlag::initGUI); // Init without reload
-        slotRefresh();
+        m_pDiffTextWindow1->slotRefresh();
+        m_pDiffTextWindow2->slotRefresh();
+        m_pDiffTextWindow3->slotRefresh();
     }
+}
+
+void KDiff3App::slotApplyManualDiffHelp()
+{
+    mainInit(m_totalDiffStatus, InitFlag::autoSolve | InitFlag::initGUI); // Init without reload
+    slotRefresh();
 }
 
 void KDiff3App::slotClearManualDiffHelpList()

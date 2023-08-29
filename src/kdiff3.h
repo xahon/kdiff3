@@ -305,6 +305,7 @@ public Q_SLOTS:
     void slotSplitDiff();
     void slotJoinDiffs();
     void slotAddManualDiffHelp();
+    void slotApplyManualDiffHelp();
     void slotClearManualDiffHelpList();
     void slotNoRelevantChangesDetected();
     void slotEncodingChanged(QTextCodec*);
@@ -388,6 +389,7 @@ public Q_SLOTS:
     QPointer<QAction> splitDiff;
     QPointer<QAction> joinDiffs;
     QPointer<QAction> addManualDiffHelp;
+    QPointer<QAction> applyManualDiffHelp;
     QPointer<QAction> clearManualDiffHelpList;
     KToggleAction* showWhiteSpaceCharacters = nullptr;
     KToggleAction* showWhiteSpace = nullptr;

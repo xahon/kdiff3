@@ -15,6 +15,8 @@ option(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 option(CMAKE_CXX_EXTENSIONS ON ) #disable trigraphs in clang/gcc -- officially removed in c++17
 option(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_CXX_STANDARD 17)
+
 set(KF_MIN_VERSION "5.85.0")
 if (BUILD_WITH_QT6)
     set(QT_MAJOR_VERSION "6")
@@ -208,3 +210,24 @@ add_subdirectory(diff_ext_for_kdiff3)
 endif()
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+file(GLOB_RECURSE ALL_RESOURCE_FILES
+    RELATIVE ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/*.rc
+    ${CMAKE_SOURCE_DIR}/src/*.png
+    ${CMAKE_SOURCE_DIR}/src/*.svg
+    ${CMAKE_SOURCE_DIR}/src/*.ico
+    ${CMAKE_SOURCE_DIR}/src/*.plist*
+    ${CMAKE_SOURCE_DIR}/src/*.desktop
+    ${CMAKE_SOURCE_DIR}/src/*.xml
+)
+foreach (RESOURCE_FILE ${ALL_RESOURCE_FILES})
+    get_filename_component(RESOURCE_FILE_PATH ${RESOURCE_FILE} DIRECTORY)
+    message(STATUS "Installing ${CMAKE_SOURCE_DIR}/src/${RESOURCE_FILE} -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${RESOURCE_FILE}")
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/src/${RESOURCE_FILE}
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${RESOURCE_FILE}
+        COPYONLY
+    )
+endforeach ()
+

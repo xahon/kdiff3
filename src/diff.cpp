@@ -30,6 +30,7 @@
 #include <KMessageBox>
 #endif
 
+#include <QApplication>
 #include <QRegularExpression>
 #include <QSharedPointer>
 #include <QTextStream>
@@ -541,6 +542,55 @@ void ManualDiffHelpList::insertEntry(e_SrcSelector winIdx, LineRef firstLine, Li
     {
         LineRef& l1 = i->firstLine(winIdx);
         LineRef& l2 = i->lastLine(winIdx);
+
+        if (firstLine > l2 || lastLine < l1)
+            continue;
+
+        if (firstLine > l1 && lastLine < l2)
+        {
+            KMessageBox::information(qApp->activeWindow(), i18n("Overlapping manual diff alignment is not allowed."), i18n("Error while adding manual diff range"));
+            return;
+        }
+
+        if (firstLine < l1 || lastLine > l2)
+        {
+            if (firstLine < l1 && lastLine <= l2)
+                i->firstLine(winIdx) = firstLine;
+            if (lastLine > l2 && firstLine >= l1)
+                i->lastLine(winIdx) = lastLine;
+            return;
+        }
+
+        if (firstLine == l1 || lastLine == l2)
+        {
+            if (firstLine == l1 && lastLine == l2)
+            {
+                i->firstLine(winIdx) = LineRef::invalid;
+                i->lastLine(winIdx) = LineRef::invalid;
+
+                if (*i == ManualDiffHelpEntry())
+                    erase(i);
+                return;
+            }
+
+            if (firstLine == l1)
+            {
+                i->firstLine(winIdx) = lastLine + 1;
+                return;
+            }
+
+            if (lastLine == l2)
+            {
+                i->lastLine(winIdx) = firstLine - 1;
+                return;
+            }
+        }
+    }
+
+    for(i = begin(); i != end(); ++i)
+    {
+        LineRef& l1 = i->firstLine(winIdx);
+        LineRef& l2 = i->lastLine(winIdx);
         if(l1.isValid() && l2.isValid())
         {
             if((firstLine <= l1 && lastLine >= l1) || (firstLine <= l2 && lastLine >= l2))
@@ -577,9 +627,9 @@ void ManualDiffHelpList::insertEntry(e_SrcSelector winIdx, LineRef firstLine, Li
             }
         }
         //Delete completely empty entries
-        if(*i == ManualDiffHelpEntry())
-            erase(i);
-        i = next;
+        if (next != end() && *next == ManualDiffHelpEntry())
+            erase(next);
+        i = std::next(i);
     }
 }
 

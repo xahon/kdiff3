@@ -660,12 +660,12 @@ void DiffTextWindow::mousePressEvent(QMouseEvent* e)
         int fontWidth = fontMetrics().horizontalAdvance('0');
         int xOffset = d->leftInfoWidth() * fontWidth;
 
-        if((!gOptions->m_bRightToLeftLanguage && e->x() < xOffset) || (gOptions->m_bRightToLeftLanguage && e->x() > width() - xOffset))
-        {
-            Q_EMIT setFastSelectorLine(convertLineToDiff3LineIdx(line));
-            d->m_selection.reset(); // Disable current d->m_selection
-        }
-        else
+//        if((!gOptions->m_bRightToLeftLanguage && e->x() < xOffset) || (gOptions->m_bRightToLeftLanguage && e->x() > width() - xOffset))
+//        {
+//            Q_EMIT setFastSelectorLine(convertLineToDiff3LineIdx(line));
+//            d->m_selection.reset(); // Disable current d->m_selection
+//        }
+//        else
         { // Selection
             resetSelection();
             d->m_selection.start(line, pos);
@@ -1210,8 +1210,9 @@ void DiffTextWindowData::writeLine(
     }
 
     // Check if line needs a manual diff help mark
+    int i = 0;
     ManualDiffHelpList::const_iterator ci;
-    for(ci = m_pManualDiffHelpList->begin(); ci != m_pManualDiffHelpList->end(); ++ci)
+    for(ci = m_pManualDiffHelpList->begin(); ci != m_pManualDiffHelpList->end(); ++ci, ++i)
     {
         const ManualDiffHelpEntry& mdhe = *ci;
         LineRef rangeLine1;
@@ -1221,6 +1222,7 @@ void DiffTextWindowData::writeLine(
         if(rangeLine1.isValid() && rangeLine2.isValid() && srcLineIdx >= rangeLine1 && srcLineIdx <= rangeLine2)
         {
             p.fillRect(xOffset - fontWidth, yOffset, fontWidth - 1, fontHeight, gOptions->manualHelpRangeColor());
+            p.drawText(xOffset - fontWidth, yOffset + fontAscent, QString('A' + i));
             break;
         }
     }

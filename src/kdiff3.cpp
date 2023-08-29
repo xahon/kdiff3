@@ -718,6 +718,7 @@ void KDiff3App::initActions(KActionCollection* ac)
     overviewModeBC = GuiUtils::createAction<KToggleAction>(i18n("B vs. C Overview"), this, &KDiff3App::slotOverviewBC, ac, "diff_overview_bc");
     wordWrap = GuiUtils::createAction<KToggleAction>(i18n("Word Wrap Diff Windows"), this, &KDiff3App::slotWordWrapToggled, ac, "diff_wordwrap");
     addManualDiffHelp = GuiUtils::createAction<QAction>(i18n("Add Manual Diff Alignment"), QKeySequence(Qt::CTRL | Qt::Key_Y), this, &KDiff3App::slotAddManualDiffHelp, ac, "diff_add_manual_diff_help");
+    applyManualDiffHelp = GuiUtils::createAction<QAction>(i18n("Apply Manual Diff Alignment"), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y), this, &KDiff3App::slotApplyManualDiffHelp, ac, "diff_apply_manual_diff_help");
     clearManualDiffHelpList = GuiUtils::createAction<QAction>(i18n("Clear All Manual Diff Alignments"), QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Y), this, &KDiff3App::slotClearManualDiffHelpList, ac, "diff_clear_manual_diff_help_list");
 
     winFocusNext = GuiUtils::createAction<QAction>(i18n("Focus Next Window"), QKeySequence(Qt::ALT | Qt::Key_Right), this, &KDiff3App::slotWinFocusNext, ac, "win_focus_next");

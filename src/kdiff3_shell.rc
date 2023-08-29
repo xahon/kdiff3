@@ -68,6 +68,7 @@
     <Action name="diff_overview_bc"/>
     <Action name="diff_wordwrap"/>
     <Action name="diff_add_manual_diff_help"/>
+    <Action name="diff_apply_manual_diff_help"/>
     <Action name="diff_clear_manual_diff_help_list"/>
   </Menu>  
   <Menu name="merge"><text>M&amp;erge</text>
